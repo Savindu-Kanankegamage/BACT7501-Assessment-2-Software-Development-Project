@@ -3,6 +3,9 @@
 # Software Development Project
 # Purchase Requisition System
 
+from datetime import datetime
+import math
+
 
 class Requisition:
     requisition_counter = 0
@@ -39,6 +42,11 @@ class Requisition:
                 print("Please enter a valid price.")
                 continue
 
+            # Step 17 - Price Validation Fix
+            if not math.isfinite(item_price):
+                print("Invalid price. Please enter a finite number.")
+                continue
+
             if item_price <= 0:
                 print("Item price must be greater than zero.")
                 continue
@@ -73,7 +81,7 @@ class Requisition:
 
         return self.status
 
-    # Step 11 - Manager Response
+    # Manager Response
     def manager_response(self, decision):
         if self.status != "Pending":
             print("Only pending requisitions can be reviewed.")
@@ -97,7 +105,7 @@ class Requisition:
 
         print("Manager decision updated successfully.")
 
-    # Step 12 - Display Requisitions
+    # Display Requisitions
     def display_requisitions(self):
         print("\nPrinting requisitions:")
         print("Date:", self.date)
@@ -113,7 +121,7 @@ class Requisition:
         print("Status:", self.status)
         print("Approval Reference Number:", self.approval_reference)
 
-    # Step 13 - Requisition Statistics
+    # Requisition Statistics
     def requisition_statistics(self):
         total_submitted = len(Requisition.all_requisitions)
         approved = 0
@@ -137,7 +145,7 @@ class Requisition:
         print("Not approved:", not_approved)
 
 
-# Step 14 - Create Multiple Requisitions
+# Create Multiple Requisitions
 if __name__ == "__main__":
     print("Purchase Requisition System")
 
@@ -158,9 +166,21 @@ if __name__ == "__main__":
     for i in range(number):
         print("\nRequisition", i + 1)
 
-        date = input("Date: ").strip()
-        while date == "":
-            date = input("Please enter the date: ").strip()
+        # Step 17 - Date Validation Fix
+        while True:
+            date = input("Date (DD/MM/YYYY): ").strip()
+
+            try:
+                valid_date = datetime.strptime(date, "%d/%m/%Y")
+
+                if valid_date.strftime("%d/%m/%Y") != date:
+                    print("Please use DD/MM/YYYY format.")
+                    continue
+
+                break
+
+            except ValueError:
+                print("Invalid date. Please enter a real date in DD/MM/YYYY format.")
 
         staff_id = input("Staff ID: ").strip()
         while staff_id == "":
