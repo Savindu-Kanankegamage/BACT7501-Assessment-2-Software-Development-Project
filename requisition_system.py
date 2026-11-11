@@ -81,11 +81,11 @@ class Requisition:
 
         return self.status
 
-    # Manager Response
+    # Step 18 - Improved Manager Response
     def manager_response(self, decision):
         if self.status != "Pending":
             print("Only pending requisitions can be reviewed.")
-            return
+            return False
 
         decision = decision.strip().lower()
 
@@ -101,9 +101,10 @@ class Requisition:
 
         else:
             print("Invalid decision. Status remains Pending.")
-            return
+            return False
 
         print("Manager decision updated successfully.")
+        return True
 
     # Display Requisitions
     def display_requisitions(self):
@@ -211,10 +212,14 @@ if __name__ == "__main__":
                 print("Please enter yes or no.")
 
             if review == "yes":
-                decision = input(
-                    "Manager Decision (approved/not approved): "
-                )
-                requisition.manager_response(decision)
+                # Retry until the manager enters a valid decision.
+                while True:
+                    decision = input(
+                        "Manager Decision (approved/not approved): "
+                    )
+                    if requisition.manager_response(decision):
+                        break
+                    
 
         requisitions.append(requisition)
 
