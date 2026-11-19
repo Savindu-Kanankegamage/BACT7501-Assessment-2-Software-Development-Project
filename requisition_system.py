@@ -42,7 +42,7 @@ class Requisition:
                 print("Please enter a valid price.")
                 continue
 
-            # Step 17 - Price Validation Fix
+            # Validate item price
             if not math.isfinite(item_price):
                 print("Invalid price. Please enter a finite number.")
                 continue
@@ -81,7 +81,7 @@ class Requisition:
 
         return self.status
 
-    # Step 18 - Improved Manager Response
+    # Manager Decision Validation
     def manager_response(self, decision):
         if self.status != "Pending":
             print("Only pending requisitions can be reviewed.")
@@ -145,6 +145,14 @@ class Requisition:
         print("Pending:", pending)
         print("Not approved:", not_approved)
 
+        # Return the calculated statistics as well as displaying them.
+        return {
+            "Total Submitted": total_submitted,
+            "Approved": approved,
+            "Pending": pending,
+            "Not approved": not_approved,
+        }
+
 
 # Create Multiple Requisitions
 if __name__ == "__main__":
@@ -167,7 +175,7 @@ if __name__ == "__main__":
     for i in range(number):
         print("\nRequisition", i + 1)
 
-        # Step 17 - Date Validation Fix
+        # Validate requisition date
         while True:
             date = input("Date (DD/MM/YYYY): ").strip()
 
@@ -219,7 +227,6 @@ if __name__ == "__main__":
                     )
                     if requisition.manager_response(decision):
                         break
-                    
 
         requisitions.append(requisition)
 
